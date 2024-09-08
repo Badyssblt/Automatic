@@ -13,6 +13,7 @@ use App\State\MailSetOwnerProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MailTemplateRepository::class)]
 #[ApiResource]
@@ -50,6 +51,19 @@ class MailTemplate
     #[Groups(['item:mail'])]
     public ?User $user = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $token = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $subject = null;
+
+    /**
+     * @param string|null $token
+     */
+    public function __construct()
+    {
+        $this->token = Uuid::v4();
+    }
 
 
     public function getId(): ?int
@@ -101,6 +115,30 @@ class MailTemplate
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): static
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(string $subject): static
+    {
+        $this->subject = $subject;
 
         return $this;
     }

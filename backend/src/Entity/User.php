@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -54,6 +55,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MailTemplate::class, mappedBy: 'user', orphanRemoval: true)]
 
     private Collection $mails;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $smtp = null;
 
     public function __construct()
     {
@@ -164,6 +168,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $mail->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSmtp(): ?string
+    {
+        return $this->smtp;
+    }
+
+    public function setSmtp(string $smtp): static
+    {
+        $this->smtp = $smtp;
 
         return $this;
     }
