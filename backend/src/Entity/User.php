@@ -3,23 +3,37 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ApiResource]
+#[Delete(security: "is_granted('ROLE_ADMIN')")]
+#[Patch(security: "is_granted('ROLE_ADMIN')")]
+#[Put(security: "is_granted('ROLE_ADMIN')")]
+#[Post]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['item:mail'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['item:mail'])]
     private ?string $email = null;
 
     /**
@@ -33,6 +47,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, MailTemplate>
+     */
+    #[ORM\OneToMany(targetEntity: MailTemplate::class, mappedBy: 'user', orphanRemoval: true)]
+
+    private Collection $mails;
+
+    public function __construct()
+    {
+        $this->mails = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
+    }
 
 
 
@@ -109,5 +136,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, MailTemplate>
+     */
+    public function getMails(): Collection
+    {
+        return $this->mails;
+    }
+
+    public function addMail(MailTemplate $mail): static
+    {
+        if (!$this->mails->contains($mail)) {
+            $this->mails->add($mail);
+            $mail->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMail(MailTemplate $mail): static
+    {
+        if ($this->mails->removeElement($mail)) {
+            // set the owning side to null (unless already changed)
+            if ($mail->getUser() === $this) {
+                $mail->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
