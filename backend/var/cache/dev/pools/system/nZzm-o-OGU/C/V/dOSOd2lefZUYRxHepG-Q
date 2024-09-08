@@ -1,0 +1,958 @@
+<?php //resource_metadata_collection_e34fdc42c89b69129e39e7071ef64566
+
+return [PHP_INT_MAX, static fn () => \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Metadata\\ErrorResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\ErrorResource')),
+        clone ($p['ApiPlatform\\Metadata\\Operations'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Operations')),
+        clone ($p['ApiPlatform\\Metadata\\Error'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Error')),
+        clone ($p['ApiPlatform\\Metadata\\Parameters'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Parameters')),
+        clone ($p['ApiPlatform\\Metadata\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Link')),
+        clone $p['ApiPlatform\\Metadata\\Error'],
+        clone $p['ApiPlatform\\Metadata\\Parameters'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone ($p['Symfony\\Component\\WebLink\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\WebLink\\Link')),
+        clone $p['ApiPlatform\\Metadata\\Error'],
+        clone $p['ApiPlatform\\Metadata\\Parameters'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Error'],
+        clone $p['ApiPlatform\\Metadata\\Parameters'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+    ],
+    null,
+    [
+        'ApiPlatform\\Metadata\\ApiResource' => [
+            'shortName' => [
+                'ConstraintViolationList',
+            ],
+            'class' => [
+                'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+            ],
+            'description' => [
+                'Thrown when a validation error occurs.',
+            ],
+            'urlGenerationStrategy' => [
+                null,
+            ],
+            'deprecationReason' => [
+                null,
+            ],
+            'normalizationContext' => [
+                null,
+            ],
+            'denormalizationContext' => [
+                null,
+            ],
+            'collectDenormalizationErrors' => [
+                null,
+            ],
+            'validationContext' => [
+                null,
+            ],
+            'filters' => [
+                null,
+            ],
+            'elasticsearch' => [
+                null,
+            ],
+            'order' => [
+                null,
+            ],
+            'fetchPartial' => [
+                null,
+            ],
+            'forceEager' => [
+                null,
+            ],
+            'paginationEnabled' => [
+                null,
+            ],
+            'paginationType' => [
+                null,
+            ],
+            'paginationItemsPerPage' => [
+                null,
+            ],
+            'paginationMaximumItemsPerPage' => [
+                null,
+            ],
+            'paginationPartial' => [
+                null,
+            ],
+            'paginationClientEnabled' => [
+                null,
+            ],
+            'paginationClientItemsPerPage' => [
+                null,
+            ],
+            'paginationClientPartial' => [
+                null,
+            ],
+            'paginationFetchJoinCollection' => [
+                null,
+            ],
+            'paginationUseOutputWalkers' => [
+                null,
+            ],
+            'security' => [
+                null,
+            ],
+            'securityMessage' => [
+                null,
+            ],
+            'securityPostDenormalize' => [
+                null,
+            ],
+            'securityPostDenormalizeMessage' => [
+                null,
+            ],
+            'securityPostValidation' => [
+                null,
+            ],
+            'securityPostValidationMessage' => [
+                null,
+            ],
+            'stateOptions' => [
+                null,
+            ],
+            'queryParameterValidationEnabled' => [
+                null,
+            ],
+            'extraProperties' => [
+                [
+                    'standard_put' => true,
+                    'rfc_7807_compliant_errors' => true,
+                ],
+            ],
+            'operations' => [
+                $o[1],
+            ],
+            'uriTemplate' => [
+                '/validation_errors/{id}',
+            ],
+            'types' => [
+                null,
+            ],
+            'formats' => [
+                null,
+            ],
+            'inputFormats' => [
+                null,
+            ],
+            'outputFormats' => [
+                null,
+            ],
+            'uriVariables' => [
+                [
+                    'id' => $o[15],
+                ],
+            ],
+            'routePrefix' => [
+                null,
+            ],
+            'defaults' => [
+                null,
+            ],
+            'requirements' => [
+                null,
+            ],
+            'options' => [
+                null,
+            ],
+            'stateless' => [
+                true,
+            ],
+            'sunset' => [
+                null,
+            ],
+            'acceptPatch' => [
+                null,
+            ],
+            'status' => [
+                422,
+            ],
+            'host' => [
+                null,
+            ],
+            'schemes' => [
+                null,
+            ],
+            'condition' => [
+                null,
+            ],
+            'controller' => [
+                null,
+            ],
+            'headers' => [
+                null,
+            ],
+            'cacheHeaders' => [
+                [
+                    'vary' => [
+                        'Content-Type',
+                        'Authorization',
+                        'Origin',
+                    ],
+                ],
+            ],
+            'hydraContext' => [
+                null,
+            ],
+            'openapiContext' => [
+                null,
+            ],
+            'openapi' => [
+                false,
+            ],
+            'paginationViaCursor' => [
+                null,
+            ],
+            'compositeIdentifier' => [
+                null,
+            ],
+            'exceptionToStatus' => [
+                null,
+            ],
+            'links' => [
+                null,
+            ],
+            'graphQlOperations' => [
+                [],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Metadata' => [
+            'provider' => [
+                'api_platform.validator.state.error_provider',
+            ],
+            'parameters' => [
+                2 => $o[3],
+                5 => $o[6],
+                9 => $o[10],
+                12 => $o[13],
+            ],
+            'queryParameterValidationEnabled' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Operations' => [
+            'operations' => [
+                1 => [
+                    [
+                        '_api_validation_errors_problem',
+                        $o[2],
+                    ],
+                    [
+                        '_api_validation_errors_hydra',
+                        $o[5],
+                    ],
+                    [
+                        '_api_validation_errors_jsonapi',
+                        $o[9],
+                    ],
+                    [
+                        '_api_validation_errors',
+                        $o[12],
+                    ],
+                ],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Operation' => [
+            'shortName' => [
+                2 => 'ConstraintViolationList',
+                5 => 'ConstraintViolationList',
+                9 => 'ConstraintViolationList',
+                12 => 'ConstraintViolationList',
+            ],
+            'class' => [
+                2 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                5 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                9 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                12 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+            ],
+            'description' => [
+                2 => 'Thrown when a validation error occurs.',
+                5 => 'Thrown when a validation error occurs.',
+                9 => 'Thrown when a validation error occurs.',
+                12 => 'Thrown when a validation error occurs.',
+            ],
+            'urlGenerationStrategy' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'deprecationReason' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'normalizationContext' => [
+                2 => [
+                    'groups' => [
+                        'json',
+                    ],
+                    'skip_null_values' => true,
+                    'rfc_7807_compliant_errors' => true,
+                ],
+                5 => [
+                    'groups' => [
+                        'jsonld',
+                    ],
+                    'skip_null_values' => true,
+                    'rfc_7807_compliant_errors' => true,
+                ],
+                9 => [
+                    'groups' => [
+                        'jsonapi',
+                    ],
+                    'skip_null_values' => true,
+                    'rfc_7807_compliant_errors' => true,
+                ],
+                12 => null,
+            ],
+            'denormalizationContext' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'collectDenormalizationErrors' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'validationContext' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'filters' => [
+                2 => [],
+                5 => [],
+                9 => [],
+                12 => [],
+            ],
+            'elasticsearch' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'order' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'fetchPartial' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'forceEager' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationEnabled' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationType' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationItemsPerPage' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationMaximumItemsPerPage' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationPartial' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationClientEnabled' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationClientItemsPerPage' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationClientPartial' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationFetchJoinCollection' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'paginationUseOutputWalkers' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'security' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'securityMessage' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'securityPostDenormalize' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'securityPostDenormalizeMessage' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'securityPostValidation' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'securityPostValidationMessage' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'provider' => [
+                2 => 'api_platform.validator.state.error_provider',
+                5 => 'api_platform.validator.state.error_provider',
+                9 => 'api_platform.validator.state.error_provider',
+                12 => 'api_platform.validator.state.error_provider',
+            ],
+            'stateOptions' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'extraProperties' => [
+                2 => [
+                    'standard_put' => true,
+                    'rfc_7807_compliant_errors' => true,
+                    'user_defined_uri_template' => true,
+                ],
+                5 => [
+                    'standard_put' => true,
+                    'rfc_7807_compliant_errors' => true,
+                    'user_defined_uri_template' => true,
+                ],
+                9 => [
+                    'standard_put' => true,
+                    'rfc_7807_compliant_errors' => true,
+                    'user_defined_uri_template' => true,
+                ],
+                12 => [
+                    'standard_put' => true,
+                    'rfc_7807_compliant_errors' => true,
+                    'user_defined_uri_template' => true,
+                ],
+            ],
+            'read' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'deserialize' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'validate' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'write' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'serialize' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'priority' => [
+                2 => 0,
+                5 => 1,
+                9 => 2,
+                12 => 3,
+            ],
+            'name' => [
+                2 => '_api_validation_errors_problem',
+                5 => '_api_validation_errors_hydra',
+                9 => '_api_validation_errors_jsonapi',
+                12 => '_api_validation_errors',
+            ],
+        ],
+        'ApiPlatform\\Metadata\\HttpOperation' => [
+            'paginationViaCursor' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'method' => [
+                2 => 'GET',
+                5 => 'GET',
+                9 => 'GET',
+                12 => 'GET',
+            ],
+            'uriTemplate' => [
+                2 => '/validation_errors/{id}',
+                5 => '/validation_errors/{id}',
+                9 => '/validation_errors/{id}',
+                12 => '/validation_errors/{id}',
+            ],
+            'types' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'inputFormats' => [
+                2 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                ],
+                5 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                ],
+                9 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                ],
+                12 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                ],
+            ],
+            'outputFormats' => [
+                2 => [
+                    'json' => [
+                        'application/problem+json',
+                    ],
+                ],
+                5 => [
+                    'jsonld' => [
+                        'application/problem+json',
+                    ],
+                ],
+                9 => [
+                    'jsonapi' => [
+                        'application/vnd.api+json',
+                    ],
+                ],
+                12 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'jsonproblem' => [
+                        'application/problem+json',
+                    ],
+                    'json' => [
+                        'application/problem+json',
+                        'application/json',
+                    ],
+                ],
+            ],
+            'uriVariables' => [
+                2 => [
+                    'id' => $o[4],
+                ],
+                5 => [
+                    'id' => $o[7],
+                ],
+                9 => [
+                    'id' => $o[11],
+                ],
+                12 => [
+                    'id' => $o[14],
+                ],
+            ],
+            'routePrefix' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'routeName' => [
+                2 => 'api_validation_errors',
+                5 => 'api_validation_errors',
+                9 => 'api_validation_errors',
+                12 => 'api_validation_errors',
+            ],
+            'defaults' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'requirements' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'options' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'stateless' => [
+                2 => true,
+                5 => true,
+                9 => true,
+                12 => true,
+            ],
+            'sunset' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'acceptPatch' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'status' => [
+                2 => 422,
+                5 => 422,
+                9 => 422,
+                12 => 422,
+            ],
+            'host' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'schemes' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'condition' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'controller' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'headers' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'cacheHeaders' => [
+                2 => [
+                    'vary' => [
+                        'Content-Type',
+                        'Authorization',
+                        'Origin',
+                    ],
+                ],
+                5 => [
+                    'vary' => [
+                        'Content-Type',
+                        'Authorization',
+                        'Origin',
+                    ],
+                ],
+                9 => [
+                    'vary' => [
+                        'Content-Type',
+                        'Authorization',
+                        'Origin',
+                    ],
+                ],
+                12 => [
+                    'vary' => [
+                        'Content-Type',
+                        'Authorization',
+                        'Origin',
+                    ],
+                ],
+            ],
+            'hydraContext' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'openapiContext' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'openapi' => [
+                2 => false,
+                5 => false,
+                9 => false,
+                12 => false,
+            ],
+            'exceptionToStatus' => [
+                2 => null,
+                5 => null,
+                9 => null,
+                12 => null,
+            ],
+            'links' => [
+                2 => null,
+                5 => [
+                    $o[8],
+                ],
+                9 => null,
+                12 => null,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Parameter' => [
+            'key' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'schema' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'openApi' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'provider' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'filter' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'property' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'description' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'required' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'priority' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'constraints' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'extraProperties' => [
+                4 => [],
+                7 => [],
+                11 => [],
+                14 => [],
+                [],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Link' => [
+            'parameterName' => [
+                4 => 'id',
+                7 => 'id',
+                11 => 'id',
+                14 => 'id',
+                'id',
+            ],
+            'fromProperty' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'toProperty' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'fromClass' => [
+                4 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                7 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                11 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                14 => 'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+                'ApiPlatform\\Symfony\\Validator\\Exception\\ValidationException',
+            ],
+            'toClass' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'identifiers' => [
+                4 => [
+                    'id',
+                ],
+                7 => [
+                    'id',
+                ],
+                11 => [
+                    'id',
+                ],
+                14 => [
+                    'id',
+                ],
+                [
+                    'id',
+                ],
+            ],
+            'compositeIdentifier' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'expandedValue' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'security' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'securityMessage' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+            'securityObjectName' => [
+                4 => null,
+                7 => null,
+                11 => null,
+                14 => null,
+                null,
+            ],
+        ],
+        'Symfony\\Component\\WebLink\\Link' => [
+            'href' => [
+                8 => 'http://www.w3.org/ns/hydra/error',
+            ],
+            'rel' => [
+                8 => [
+                    'http://www.w3.org/ns/json-ld#error' => 'http://www.w3.org/ns/json-ld#error',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+)];
