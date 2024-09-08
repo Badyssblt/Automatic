@@ -2,3 +2,5 @@
 /backend/var/
 /backend/vendor/
 /backend/env.local
+/backend/public/bundles/
+
