@@ -33,7 +33,6 @@ class UserPasswordSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // Hash the password
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashedPassword);
     }

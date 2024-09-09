@@ -74,7 +74,7 @@ class MailController extends AbstractController
         return $this->json(['message' => 'Le mail a bien été envoyé'], Response::HTTP_OK);
     }
 
-    private function buildContent(string $content, mixed $data)
+    private function buildContent(string $content, mixed $data): string
     {
 
         return "

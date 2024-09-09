@@ -31,7 +31,6 @@ class MailSetOwnerProcessor implements ProcessorInterface
         }
 
         $result = $this->persistProcessor->process($data, $operation, $uriVariables, $context);
-
         return $result;
     }
 }

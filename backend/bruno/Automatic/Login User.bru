@@ -6,6 +6,18 @@ meta {
 
 post {
   url: {{baseUrl}}/api/login_check
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "username": "test@gmail.com",
+    "password": "test"
+  }
+}
+
+script:post-response {
+  let data = res.getBody();
+  bru.setEnvVar("token",data.token);
 }
