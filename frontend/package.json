@@ -10,6 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@tiptap/extension-underline": "^2.6.6",
+    "@tiptap/pm": "^2.6.6",
+    "@tiptap/starter-kit": "^2.6.6",
+    "@tiptap/vue-3": "^2.6.6",
+    "axios": "^1.7.7",
+    "js-cookie": "^3.0.5",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
