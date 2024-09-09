@@ -5,7 +5,22 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/send-mail
-  body: none
-  auth: none
+  url: {{baseUrl}}/api/send-mail/6d71ffb8-618a-4dac-bba0-dcd18ccf0230/badyss.blt@gmail.com?apiKey=test
+  body: json
+  auth: bearer
+}
+
+params:query {
+  apiKey: test
+}
+
+auth:bearer {
+  token: 
+}
+
+body:json {
+  {
+    "receiver": "badyss.blt@gmail.com",
+    "data": "<h1 class='font-bold text-sm'>Produits1</h1>"
+  }
 }

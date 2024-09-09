@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\ApiKeyRepository;
 use App\Repository\MailTemplateRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,14 +26,16 @@ class MailController extends AbstractController
     }
 
 
-    #[Route('/api/send-mail/{mailKey}/{receiver}', name: 'app_send_mail', methods: ['POST'])]
-    public function sendMail(string $mailKey, MailTemplateRepository $mailTemplateRepository, string $receiver, Request $request): Response
+    #[Route('/api/send-mail/{mailKey}', name: 'app_send_mail', methods: ['POST'])]
+    public function sendMail(string $mailKey, MailTemplateRepository $mailTemplateRepository, Request $request, ApiKeyRepository $apiKeyRepository): Response
     {
-        $user = $this->getUser();
+        $apiKey = $request->query->get('apiKey');
 
-        if(!$user)
-        {
-            return $this->json(['message' => 'Veuillez vous connectez'], Response::HTTP_UNAUTHORIZED);
+        $user = $apiKeyRepository->findOneBy(['token' => $apiKey])->getUser();
+
+
+        if(!$user) {
+            return $this->json(['message' => "Veuillez passer une clé d'API valide"], Response::HTTP_UNAUTHORIZED);
         }
 
         $mail = $mailTemplateRepository->findOneBy(['user' => $user, 'token' => $mailKey]);
@@ -41,6 +45,7 @@ class MailController extends AbstractController
         }
 
         $data = $request->getPayload()->get('data');
+        $receiver = $request->getPayload()->get('receiver');
 
 
         $smtp = $user->getSmtp();
@@ -51,7 +56,8 @@ class MailController extends AbstractController
         $css = file_get_contents('styles.css');
 
 
-       $content = $this->buildContent($mail->getContent(), $data);
+        $content = $this->buildContent($mail->getContent(), $data);
+
 
         $inliner = new CssToInlineStyles();
         $content = $inliner->convert($content, $css);
@@ -63,7 +69,6 @@ class MailController extends AbstractController
             ->subject($mail->getSubject())
             ->html($content);
 
-
         $mailer->send($email);
 
         return $this->json(['message' => 'Le mail a bien été envoyé'], Response::HTTP_OK);
@@ -72,7 +77,19 @@ class MailController extends AbstractController
     private function buildContent(string $content, mixed $data)
     {
 
-        return str_replace('{{data}}', $data, $content);
+        return "
+                <html>
+                <head>
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+                        
+                    </style>
+                </head>
+                <body style='color: black; font-family: Inter, sans-serif;'>
+                    " .str_replace('{{data}}', $data, $content) .
+            "
+                </body>
+                </html>";
 
     }
 }

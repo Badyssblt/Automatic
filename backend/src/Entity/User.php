@@ -59,10 +59,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT)]
     private ?string $smtp = null;
 
+    /**
+     * @var Collection<int, ApiKey>
+     */
+    #[ORM\OneToMany(targetEntity: ApiKey::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $apiKeys;
+
     public function __construct()
     {
         $this->mails = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
+        $this->apiKeys = new ArrayCollection();
     }
 
 
@@ -180,6 +187,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSmtp(string $smtp): static
     {
         $this->smtp = $smtp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ApiKey>
+     */
+    public function getApiKeys(): Collection
+    {
+        return $this->apiKeys;
+    }
+
+    public function addApiKey(ApiKey $apiKey): static
+    {
+        if (!$this->apiKeys->contains($apiKey)) {
+            $this->apiKeys->add($apiKey);
+            $apiKey->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApiKey(ApiKey $apiKey): static
+    {
+        if ($this->apiKeys->removeElement($apiKey)) {
+            // set the owning side to null (unless already changed)
+            if ($apiKey->getUser() === $this) {
+                $apiKey->setUser(null);
+            }
+        }
 
         return $this;
     }
