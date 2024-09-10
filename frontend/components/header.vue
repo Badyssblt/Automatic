@@ -1,4 +1,9 @@
 <script setup>
+  import { useAuth } from "~/stores/auth.js";
+
+  const store = useAuth();
+
+  const isAuthenticated = store.isAuthenticated;
 
 </script>
 
@@ -10,9 +15,12 @@
           <h1 class="font-bold text-xl">Automatic</h1>
           <button>Outils</button>
         </div>
-        <div class="flex gap-4 items-center">
+        <div class="flex gap-4 items-center" v-if="!isAuthenticated">
           <NuxtLink to="/login">Se connecter</NuxtLink>
           <NavLink url="/register">S'inscrire</NavLink>
+        </div>
+        <div class="flex gap-4 items-center" v-else>
+          <NavLink url="/register">Mon compte</NavLink>
         </div>
       </menu>
     </header>

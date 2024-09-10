@@ -1,23 +1,4 @@
-<script setup>
-import Cookie from "js-cookie";
-  const $config  = useRuntimeConfig();
-  const { $api } = useNuxtApp();
-
-const mails = ref([]);
-const fetchMails = async () => {
-  try {
-    const response = await $api.get('/api/mails')
-    mails.value = response.data;
-  }catch (e) {
-    console.log(e)
-  }
-}
-
-onMounted(async () => {
-  await fetchMails()
-})
-
-
+<script setup >
 
 </script>
 
@@ -38,11 +19,12 @@ onMounted(async () => {
         Déployer un mail</AsideButton>
     </Aside>
     <div class="mt-4">
-      <h2 class="text-2xl font-bold">Mes mails</h2>
-      <div class="flex flew-wrap mt-4 gap-4" v-if="mails">
-        <MailCard v-for="mail in mails" :mail="mail" :key="mail.id"/>
-      </div>
+      <h2 class="text-2xl font-bold">Déployer</h2>
+
     </div>
   </div>
 </template>
 
+<style scoped>
+
+</style>
