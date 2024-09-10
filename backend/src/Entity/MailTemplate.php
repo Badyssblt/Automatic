@@ -18,6 +18,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: MailTemplateRepository::class)]
 #[ApiResource]
 #[Delete(security: "object.user == user")]
+#[Get(uriTemplate: "/mail/{id}" , security: "object.user == user")]
 #[Post(
     uriTemplate: "/mails",
     security: "is_granted('ROLE_USER')",
@@ -52,6 +53,7 @@ class MailTemplate
     public ?User $user = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(["item:mail", 'collection:mail'])]
     private ?string $token = null;
 
     #[ORM\Column(length: 255)]

@@ -70,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->mails = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
         $this->apiKeys = new ArrayCollection();
+        $this->smtp = "";
     }
 
 
