@@ -1,10 +1,10 @@
 import axios from "axios";
-// import { useAuth } from "@/store/auth";
+import { useAuth } from "@/stores/auth";
 import Cookie from "js-cookie";
 
 export default defineNuxtPlugin((nuxtApp) => {
 
-  // const store = useAuth();
+  const store = useAuth();
 
   const config = nuxtApp.$config
   const api = axios.create({
@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 
   api.interceptors.request.use((config) => {
-    const token = Cookie.get('token');
+    const token = store?.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
