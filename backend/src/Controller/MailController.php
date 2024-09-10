@@ -44,6 +44,10 @@ class MailController extends AbstractController
             return $this->json(['message' => 'Une erreur est survenue, le mail est introuvable'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
+        if(!$mail->isDeploy()){
+            return $this->json(['message' => 'Veuillez activer votre mail dans votre dashboard'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         $data = $request->getPayload()->get('data');
         $receiver = $request->getPayload()->get('receiver');
 

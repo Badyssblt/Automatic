@@ -17,7 +17,7 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MailTemplateRepository::class)]
 #[ApiResource]
-#[Delete(security: "object.user == user")]
+#[Delete(uriTemplate: "/mail/{id}", security: "object.user == user")]
 #[Get(uriTemplate: "/mail/{id}" , security: "object.user == user")]
 #[Post(
     uriTemplate: "/mails",
