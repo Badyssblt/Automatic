@@ -39,7 +39,7 @@ onMounted(async () => {
     </Aside>
     <div class="mt-4">
       <h2 class="text-2xl font-bold">Mes mails</h2>
-      <div class="flex flew-wrap mt-4 gap-4" v-if="mails">
+      <div class="flex flex-wrap mt-4 gap-4 w-full" v-if="mails">
         <MailCard v-for="mail in mails" :mail="mail" :key="mail.id"/>
       </div>
     </div>

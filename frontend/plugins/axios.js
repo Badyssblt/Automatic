@@ -20,6 +20,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (config.method === 'patch') {
+      config.headers['Content-Type'] = 'application/merge-patch+json';
+    }
     return config;
   });
 

@@ -9,22 +9,39 @@
   const behavior = ref();
   const subject = ref('');
   const content = ref('');
+  const is_deploy = ref(false);
 
   const mail = ref();
+  const loading = ref(false);
 
   const fetchMail = async () => {
     try {
-      console.log(id)
       const response = await $api.get(`/api/mail/${id.value}`);
       if(response.data){
+        console.log(response.data)
         mail.value = response.data;
         name.value = mail.value.name;
         behavior.value = mail.value.behaviour;
         subject.value = mail.value.subject;
+        is_deploy.value = mail.value.deploy;
       }
     }catch (e) {
       console.log(e)
     }
+  }
+
+  const toggleDeploy = async () => {
+    try {
+      const response = await $api.patch(`/api/mails/${id.value}`, {
+        deploy: is_deploy.value
+      });
+    }catch (e){
+
+    }
+  }
+
+  const updateContent = (newContent) => {
+    content.value = newContent
   }
 
   onMounted(async () => {
@@ -51,7 +68,12 @@
     </Aside>
     <div class="mt-4 w-full">
       <h2 class="text-2xl font-bold">Déployer</h2>
-      <form @submit.prevent="createMail" class  >
+      <form @submit.prevent="createMail">
+        <label class="inline-flex items-center cursor-pointer my-4">
+          <input type="checkbox" value="" class="sr-only peer" v-model="is_deploy" @change="toggleDeploy">
+          <div class="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer bg-slate-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-red-600"></div>
+          <span class="ms-3 text-sm font-medium text-gray-900 ">{{ is_deploy === true ? 'Activé' : 'Désactivé' }}</span>
+        </label>
         <Input placeholder="Code vérification" label="Nom du mail" v-model="name"/>
         <label for="behaviour" class="flex flex-col my-2">
           Comportement
@@ -66,7 +88,7 @@
           <Editor @updateContent="updateContent" />
         </div>
 
-        <Button class="w-full" :loading="loading">Créer le mail</Button>
+        <Button class="w-full" :loading="loading">Modifier le mail</Button>
       </form>
     </div>
   </div>

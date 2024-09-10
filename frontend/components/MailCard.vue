@@ -44,7 +44,7 @@ const copyToClipboard = (text) => {
       </div>
       </p>
     </div>
-    <Button class="w-full mt-4">Voir le mail</Button>
+    <NavLink :url="`/mails/deploy/${mail.id}`" class="w-full mt-4 flex justify-center">Voir le mail</NavLink>
   </div>
 </template>
 
