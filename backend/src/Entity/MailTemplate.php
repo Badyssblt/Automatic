@@ -57,7 +57,12 @@ class MailTemplate
     private ?string $token = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["item:mail", 'collection:mail'])]
     private ?string $subject = null;
+
+    #[ORM\Column]
+    #[Groups(["item:mail", 'collection:mail'])]
+    private ?bool $is_deploy = null;
 
     /**
      * @param string|null $token
@@ -65,6 +70,7 @@ class MailTemplate
     public function __construct()
     {
         $this->token = Uuid::v4();
+        $this->is_deploy = false;
     }
 
 
@@ -141,6 +147,18 @@ class MailTemplate
     public function setSubject(string $subject): static
     {
         $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function isDeploy(): ?bool
+    {
+        return $this->is_deploy;
+    }
+
+    public function setDeploy(bool $is_deploy): static
+    {
+        $this->is_deploy = $is_deploy;
 
         return $this;
     }
