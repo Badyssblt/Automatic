@@ -39,8 +39,12 @@ onMounted(async () => {
     </Aside>
     <div class="mt-4">
       <h2 class="text-2xl font-bold">Mes mails</h2>
-      <div class="flex flex-wrap mt-4 gap-4 w-full" v-if="mails">
+      <div class="flex flex-wrap mt-4 gap-4 w-full" v-if="mails && mails.length > 0">
         <MailCard v-for="mail in mails" :mail="mail" :key="mail.id"/>
+      </div>
+      <div v-else class="flex gap-4">
+        <p>Vous n'avez aucun mail...</p>
+        <NuxtLink to="/mails/create" class="text-red-600 font-semibold">Créez-en un</NuxtLink>
       </div>
     </div>
   </div>
