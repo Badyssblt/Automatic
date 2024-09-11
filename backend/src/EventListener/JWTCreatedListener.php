@@ -37,7 +37,7 @@ public function onJWTCreated(JWTCreatedEvent $event)
 
     $payload       = $event->getData();
 
-    $payload['name'] = $user->getName();
+    $payload['is_verified'] = $user->isVerified();
 
     $event->setData($payload);
 

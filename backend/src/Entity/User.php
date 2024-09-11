@@ -7,7 +7,9 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\EventSubscriber\UserPasswordSubscriber;
 use App\Repository\UserRepository;
+use App\State\UserVerificationProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -23,7 +25,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[Delete(security: "is_granted('ROLE_ADMIN')")]
 #[Patch(security: "is_granted('ROLE_ADMIN')")]
 #[Put(security: "is_granted('ROLE_ADMIN')")]
-#[Post]
+#[Post(processor: UserVerificationProcessor::class)]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -65,12 +67,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: ApiKey::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $apiKeys;
 
+    #[ORM\Column]
+    private ?bool $is_verified = null;
+
+    #[ORM\Column]
+    private ?int $verification_code = null;
+
     public function __construct()
     {
         $this->mails = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
         $this->apiKeys = new ArrayCollection();
         $this->smtp = "";
+        $this->is_verified = false;
     }
 
 
@@ -218,6 +227,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $apiKey->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): ?bool
+    {
+        return $this->is_verified;
+    }
+
+    public function setVerified(bool $is_verified): static
+    {
+        $this->is_verified = $is_verified;
+
+        return $this;
+    }
+
+    public function getVerificationCode(): ?int
+    {
+        return $this->verification_code;
+    }
+
+    public function setVerificationCode(int $verification_code): static
+    {
+        $this->verification_code = $verification_code;
 
         return $this;
     }
