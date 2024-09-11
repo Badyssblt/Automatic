@@ -5,8 +5,11 @@ export const useAuth = defineStore(
   () => {
     const user = ref(null);
     const token = ref("");
+    const verified = ref(false);
 
-    const isAuthenticated = computed(() => user.value !== null);
+    const isAuthenticated = computed(() => {
+        return user.value !== null && verified.value !== false;
+    });
 
     const authenticate = (newUser) => {
       user.value = newUser;
@@ -23,6 +26,7 @@ export const useAuth = defineStore(
       token,
       isAuthenticated,
       logout,
+        verified
     };
   },
   {

@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useAuth } from "@/stores/auth";
-import Cookie from "js-cookie";
+import {jwtDecode} from "jwt-decode";
 
 export default defineNuxtPlugin((nuxtApp) => {
-
   const store = useAuth();
+  const config = nuxtApp.$config;
 
-  const config = nuxtApp.$config
   const api = axios.create({
     baseURL: config.public.API_URL,
     timeout: 10000,
@@ -15,11 +14,21 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   });
 
+  const isTokenValid = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      return decoded.exp * 1000 > Date.now();
+    } catch (e) {
+      return false;
+    }
+  };
+
   api.interceptors.request.use((config) => {
     const token = store?.token;
-    if (token) {
+    if (token && isTokenValid(token) && store.isAuthenticated) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log(store.isAuthenticated)
 
     if (config.method === 'patch') {
       config.headers['Content-Type'] = 'application/merge-patch+json';
@@ -27,7 +36,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     return config;
   });
 
-  // Intercepteurs de réponses
   api.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -37,7 +45,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         return Promise.reject(error);
       }
   );
-
 
   nuxtApp.provide("api", api);
 });

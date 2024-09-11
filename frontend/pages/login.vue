@@ -25,10 +25,16 @@ const { $api } = useNuxtApp();
         const decoded = jwtDecode(response.data.token)
         store.authenticate({
           email: decoded.username,
-          roles: decoded.roles
+          roles: decoded.roles,
         });
+        store.verified = decoded.is_verified
         store.token = response.data.token;
-        navigateTo('/')
+        if(store.verified){
+          navigateTo('/mails')
+        }else {
+          navigateTo('/verification')
+        }
+
       }
     }catch (e) {
       error.value = true;

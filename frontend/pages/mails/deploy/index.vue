@@ -18,9 +18,9 @@
       </svg>
         Déployer un mail</AsideButton>
     </Aside>
-    <div class="mt-4">
+    <div class="mt-4 w-full">
       <h2 class="text-2xl font-bold">Déployer</h2>
-
+      <Input label="Rechercher..." placeholder="Vérification du compte" class="w-full mt-4" color="normal"/>
     </div>
   </div>
 </template>
