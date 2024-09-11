@@ -13,17 +13,18 @@
 
   const mail = ref();
   const loading = ref(false);
+  const success = ref(false);
 
   const fetchMail = async () => {
     try {
       const response = await $api.get(`/api/mail/${id.value}`);
       if(response.data){
-        console.log(response.data)
         mail.value = response.data;
         name.value = mail.value.name;
         behavior.value = mail.value.behaviour;
         subject.value = mail.value.subject;
         is_deploy.value = mail.value.deploy;
+        content.value = mail.value.content;
       }
     }catch (e) {
       console.log(e)
@@ -53,6 +54,20 @@
     }catch (e) {
 
     }
+  }
+
+  const editMail = async () => {
+    loading.value = true;
+    try {
+      const response = await $api.patch(`/api/mails/${id.value}`, {
+        name: name.value,
+        behaviour: behavior.value,
+        content: content.value,
+        subject: subject.value
+      });
+    }catch (e) {
+    }
+    loading.value = false;
   }
 
   onMounted(async () => {
@@ -86,7 +101,7 @@
           </svg>
         </button>
       </div>
-      <form @submit.prevent="createMail">
+      <form @submit.prevent="editMail">
         <label class="inline-flex items-center cursor-pointer my-4">
           <input type="checkbox" value="" class="sr-only peer" v-model="is_deploy" @change="toggleDeploy">
           <div class="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer bg-slate-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-red-600"></div>
@@ -103,11 +118,12 @@
 
         <div class="my-4">
           <p>Message</p>
-          <Editor @updateContent="updateContent" />
+          <Editor @updateContent="updateContent" :defaultContent="content"/>
         </div>
 
         <Button class="w-full" :loading="loading">Modifier le mail</Button>
       </form>
+      <Success>Le mail a bien été modifié</Success>
     </div>
   </div>
 </template>
