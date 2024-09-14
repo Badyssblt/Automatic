@@ -35,7 +35,7 @@ class UserVerificationProcessor implements ProcessorInterface
         try {
             $this->client->request(
                 'POST',
-                $_ENV['API_URL'] ."/api/send-mail/549fd50a-2e8c-4e03-88ac-b5937adfb787?apiKey=test",
+                $_ENV['API_URL'] ."/api/send-mail/efbd933a-21d3-4eef-9165-f33985327e2b?apiKey=" . $_ENV['API_KEY'],
                 [
                     "json" => [
                         "data" => $verificationCode,

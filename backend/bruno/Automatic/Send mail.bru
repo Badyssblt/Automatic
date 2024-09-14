@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/send-mail/6d71ffb8-618a-4dac-bba0-dcd18ccf0230/badyss.blt@gmail.com?apiKey=test
+  url: http://localhost:8215/api/send-mail/549fd50a-2e8c-4e03-88ac-b5937adfb787?apiKey=test
   body: json
   auth: bearer
 }
@@ -20,7 +20,7 @@ auth:bearer {
 
 body:json {
   {
-    "receiver": "badyss.blt@gmail.com",
-    "data": "<h1 class='font-bold text-sm'>Produits1</h1>"
+    "receiver": "contact@badyssblilita.fr",
+    "data": "test"
   }
 }

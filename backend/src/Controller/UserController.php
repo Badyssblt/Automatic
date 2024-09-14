@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\ApiKey;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Uid\Uuid;
 
 class UserController extends AbstractController
 {
@@ -32,7 +34,13 @@ class UserController extends AbstractController
 
         $user->setVerified(true);
 
+        $apiKey = new ApiKey();
+        $apiKey->setUser($user);
+        $apiKey->setToken(Uuid::v4());
+
         $manager->persist($user);
+        $manager->persist($apiKey);
+
         $manager->flush();
 
         return $this->json(['message' => 'Vérification réussi'], Response::HTTP_OK);
