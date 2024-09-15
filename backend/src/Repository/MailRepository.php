@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\MailTemplate;
+use App\Entity\Mail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MailTemplate>
+ * @extends ServiceEntityRepository<Mail>
  */
-class MailTemplateRepository extends ServiceEntityRepository
+class MailRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MailTemplate::class);
+        parent::__construct($registry, Mail::class);
     }
 
     //    /**
-    //     * @return MailTemplate[] Returns an array of MailTemplate objects
+    //     * @return Mail[] Returns an array of Mail objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class MailTemplateRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?MailTemplate
+    //    public function findOneBySomeField($value): ?Mail
     //    {
     //        return $this->createQueryBuilder('m')
     //            ->andWhere('m.exampleField = :val')

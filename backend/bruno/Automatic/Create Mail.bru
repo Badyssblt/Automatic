@@ -5,7 +5,21 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/mail_templates
-  body: none
-  auth: none
+  url: {{baseUrl}}/api/mails
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "test",
+    "behaviour": "normal",
+    "content": "test",
+    "subject": "test",
+    "template": true
+  }
 }

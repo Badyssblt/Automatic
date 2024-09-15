@@ -52,9 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     /**
-     * @var Collection<int, MailTemplate>
+     * @var Collection<int, Mail>
      */
-    #[ORM\OneToMany(targetEntity: MailTemplate::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Mail::class, mappedBy: 'user', orphanRemoval: true)]
 
     private Collection $mails;
 
@@ -160,14 +160,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, MailTemplate>
+     * @return Collection<int, Mail>
      */
     public function getMails(): Collection
     {
         return $this->mails;
     }
 
-    public function addMail(MailTemplate $mail): static
+    public function addMail(Mail $mail): static
     {
         if (!$this->mails->contains($mail)) {
             $this->mails->add($mail);
@@ -177,7 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeMail(MailTemplate $mail): static
+    public function removeMail(Mail $mail): static
     {
         if ($this->mails->removeElement($mail)) {
             // set the owning side to null (unless already changed)

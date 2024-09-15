@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: http://localhost:8215/api/send-mail/549fd50a-2e8c-4e03-88ac-b5937adfb787?apiKey=test
+  url: http://localhost:8215/api/send-mail/efbd933a-21d3-4eef-9165-f33985327e2b?apiKey=757339a1-4f75-410a-aad5-f79f371b3763
   body: json
   auth: bearer
 }
 
 params:query {
-  apiKey: test
+  apiKey: 757339a1-4f75-410a-aad5-f79f371b3763
 }
 
 auth:bearer {
@@ -20,7 +20,13 @@ auth:bearer {
 
 body:json {
   {
-    "receiver": "contact@badyssblilita.fr",
-    "data": "test"
+    "receiver": "badyss.blt@gmail.com",
+    "data": {
+      "verificationCode": 123412,
+      "products": [
+        {"name": "test"},
+        {"name": "test2"}
+      ]
+    }
   }
 }

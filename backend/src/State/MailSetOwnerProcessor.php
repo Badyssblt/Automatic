@@ -4,9 +4,10 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\MailTemplate;
+use App\Entity\Mail;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 #[AsDecorator('api_platform.doctrine.orm.state.persist_processor')]
@@ -23,14 +24,16 @@ class MailSetOwnerProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        if($data instanceof MailTemplate && $data->getUser() === null) {
+        if ($data instanceof Mail && $data->getUser() === null) {
             $currentUser = $this->security->getUser();
             if ($currentUser) {
                 $data->setUser($currentUser);
             }
+            if ($data->isTemplate() === true && !in_array("ROLE_ADMIN", $currentUser->getRoles(), true)) {
+                $data->setTemplate(false);
+            }
         }
 
-        $result = $this->persistProcessor->process($data, $operation, $uriVariables, $context);
-        return $result;
+        return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }
 }

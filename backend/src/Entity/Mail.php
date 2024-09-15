@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Repository\MailRepository;
 use App\Repository\MailTemplateRepository;
 use App\State\MailSetOwnerProcessor;
 use Doctrine\DBAL\Types\Types;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: MailTemplateRepository::class)]
+#[ORM\Entity(repositoryClass: MailRepository::class)]
 #[ApiResource]
 #[Delete(uriTemplate: "/mail/{id}", security: "object.user == user")]
 #[Get(uriTemplate: "/mail/{id}" , security: "object.user == user")]
@@ -27,7 +28,7 @@ use Symfony\Component\Uid\Uuid;
     uriTemplate: "/mails/{id}",
     security: "object.user == user",
 )]
-class MailTemplate
+class Mail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -64,6 +65,9 @@ class MailTemplate
     #[Groups(["item:mail", 'collection:mail'])]
     private ?bool $is_deploy = null;
 
+    #[ORM\Column]
+    private ?bool $is_template = null;
+
     /**
      * @param string|null $token
      */
@@ -71,6 +75,7 @@ class MailTemplate
     {
         $this->token = Uuid::v4();
         $this->is_deploy = false;
+        $this->is_template = false;
     }
 
 
@@ -159,6 +164,18 @@ class MailTemplate
     public function setDeploy(bool $is_deploy): static
     {
         $this->is_deploy = $is_deploy;
+
+        return $this;
+    }
+
+    public function isTemplate(): ?bool
+    {
+        return $this->is_template;
+    }
+
+    public function setTemplate(bool $is_template): static
+    {
+        $this->is_template = $is_template;
 
         return $this;
     }
