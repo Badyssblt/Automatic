@@ -3,36 +3,51 @@ import { ref, onMounted, watch } from 'vue';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
+import TextAlign from '@tiptap/extension-text-align';
+import Color from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style';
 
 const editor = ref(null);
+const previewContent = ref('');
 
 const props = defineProps({
   defaultContent: {
     type: String,
     default: ""
   }
-})
+});
 
 const emit = defineEmits(['updateContent']);
 
 onMounted(() => {
   editor.value = new Editor({
     content: props.defaultContent,
-    extensions: [StarterKit, Underline],
+    extensions: [
+      StarterKit,
+      Underline,
+      TextStyle, // Ensure TextStyle is included
+      Color.configure({ types: ['textStyle'] }),
+      TextAlign.configure({ types: ['heading', 'paragraph'] })
+    ],
     editorProps: {
       attributes: {
         class: 'min-h-96 focus:outline-none',
       },
     },
-    onUpdate({editor}) {
-      emit('updateContent', editor.getHTML());
+    onUpdate({ editor }) {
+      const content = editor.getHTML();
+      emit('updateContent', content);
+      previewContent.value = content;
     }
   });
+
+  previewContent.value = props.defaultContent;
 });
 
 watch(() => props.defaultContent, (newContent) => {
-  if (editor.value && newContent !== editor.value.getHTML()) {
+  if (editor.value) {
     editor.value.commands.setContent(newContent);
+    previewContent.value = newContent;
   }
 });
 
@@ -47,18 +62,35 @@ const toggleUnderline = () => {
 const toggleItalic = () => {
   editor.value.chain().focus().toggleItalic().run();
 };
+
+const setTextColor = (color) => {
+  editor.value.chain().focus().setColor(color).run();
+};
+
+const setTextBackgroundColor = (color) => {
+  editor.value.chain().focus().setMark('textStyle', { backgroundColor: color }).run();
+};
+
+const setTextAlign = (alignment) => {
+  editor.value.chain().focus().setTextAlign(alignment).run();
+};
 </script>
+
+
 
 <template>
   <div>
+    <!-- Toolbar -->
     <div class="flex gap-2 mb-2">
+      <!-- Bold -->
       <button type="button" @click="toggleBold" :class="{ active: editor?.isActive('bold') }">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              class="size-6">
-          <path stroke-linejoin="round"
-                d="M6.75 3.744h-.753v8.25h7.125a4.125 4.125 0 0 0 0-8.25H6.75Zm0 0v.38m0 16.122h6.747a4.5 4.5 0 0 0 0-9.001h-7.5v9h.753Zm0 0v-.37m0-15.751h6a3.75 3.75 0 1 1 0 7.5h-6m0-7.5v7.5m0 0v8.25m0-8.25h6.375a4.125 4.125 0 0 1 0 8.25H6.75m.747-15.38h4.875a3.375 3.375 0 0 1 0 6.75H7.497v-6.75Zm0 7.5h5.25a3.75 3.75 0 0 1 0 7.5h-5.25v-7.5Z"/>
+          <path stroke-linejoin="round" d="M6.75 3.744h-.753v8.25h7.125a4.125 4.125 0 0 0 0-8.25H6.75Zm0 0v.38m0 16.122h6.747a4.5 4.5 0 0 0 0-9.001h-7.5v9h.753Zm0 0v-.37m0-15.751h6a3.75 3.75 0 1 1 0 7.5h-6m0-7.5v7.5m0 0v8.25m0-8.25h6.375a4.125 4.125 0 0 1 0 8.25H6.75m.747-15.38h4.875a3.375 3.375 0 0 1 0 6.75H7.497v-6.75Zm0 7.5h5.25a3.75 3.75 0 0 1 0 7.5h-5.25v-7.5Z"/>
         </svg>
       </button>
+
+      <!-- Italic -->
       <button type="button" @click="toggleItalic" :class="{ active: editor?.isActive('italic') }">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              class="size-6">
@@ -66,6 +98,8 @@ const toggleItalic = () => {
                 d="M5.248 20.246H9.05m0 0h3.696m-3.696 0 5.893-16.502m0 0h-3.697m3.697 0h3.803"/>
         </svg>
       </button>
+
+      <!-- Underline -->
       <button type="button" @click="toggleUnderline" :class="{ active: editor?.isActive('underline') }">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              class="size-6">
@@ -73,8 +107,24 @@ const toggleItalic = () => {
                 d="M17.995 3.744v7.5a6 6 0 1 1-12 0v-7.5m-2.25 16.502h16.5"/>
         </svg>
       </button>
+
+      <!-- Text Color -->
+      <input type="color" @input="setTextColor($event.target.value)" title="Text Color" class="border rounded-md w-8 h-8 p-0.5"/>
+
+      <!-- Background Color -->
+      <input type="color" @input="setTextBackgroundColor($event.target.value)" title="Background Color" class="border rounded-md w-8 h-8 p-0.5"/>
+
+      <!-- Text Alignment -->
+      <select @change="setTextAlign($event.target.value)" class="border rounded-md">
+        <option value="left">Left</option>
+        <option value="center">Center</option>
+        <option value="right">Right</option>
+        <option value="justify">Justify</option>
+      </select>
     </div>
 
     <EditorContent :editor="editor" class="min-h-[400px] border border-gray-300 p-2 rounded-md"/>
+
+    <div v-html="previewContent" class="mt-4 p-4 border border-gray-300 rounded-md bg-white"></div>
   </div>
 </template>

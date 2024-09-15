@@ -3,8 +3,11 @@
     <div class="mt-12 min-h-96">
       <h2 class="font-semibold text-3xl md:text-4xl text-center">Ne perdez plus de temps<br/> avec <span class="text-red-600">Automatic</span></h2>
       <p class="text-center mt-4">Découvrez la suite Automatic pour gagnez du temps<br/> sur vos tâches répétitives</p>
-      <div class="flex justify-center mt-4">
+      <div class="flex justify-center mt-4" v-if="!isAuthenticated">
         <NavLink url="/register">Je m'inscris gratuitement</NavLink>
+      </div>
+      <div class="flex justify-center mt-4" v-else>
+        <NavLink url="/mails">J'accède à mon compte</NavLink>
       </div>
     </div>
   <div>
@@ -15,7 +18,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
           </svg>
           <h2 class="text-2xl ">Mails</h2>
-          <p class="w-52 text-center text-sm text-gray-500">Envoyer facilement des emails avec vos propres données avec TailwindCSS</p>
+          <p class="w-52 text-center text-sm text-gray-500">Envoyer facilement des emails avec vos propres données avec TailwindCSS grâce à notre API</p>
         </div>
         <div class="flex flex-col items-center">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-24 text-red-600">
@@ -38,7 +41,11 @@
 </template>
 
 <script setup>
+import { useAuth } from "@/stores/auth.js";
 
+const store = useAuth();
+
+const isAuthenticated = ref(store.isAuthenticated)
 </script>
 
 

@@ -10,6 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@tiptap/extension-color": "^2.6.6",
+    "@tiptap/extension-text-align": "^2.6.6",
     "@tiptap/extension-underline": "^2.6.6",
     "@tiptap/pm": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",

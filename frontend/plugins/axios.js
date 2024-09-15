@@ -28,7 +28,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (token && isTokenValid(token) && store.isAuthenticated) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log(store.isAuthenticated)
 
     if (config.method === 'patch') {
       config.headers['Content-Type'] = 'application/merge-patch+json';

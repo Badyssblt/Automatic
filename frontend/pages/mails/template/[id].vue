@@ -1,81 +1,86 @@
 <script setup>
 
-  const route = useRoute();
-  const { $api } = useNuxtApp();
-  const id = ref(route.params.id);
+const route = useRoute();
+const { $api } = useNuxtApp();
+const id = ref(route.params.id);
 
-  definePageMeta({
-    middleware: "auth"
-  })
+definePageMeta({
+  middleware: "auth"
+})
 
-  const name = ref('');
-  const behavior = ref();
-  const subject = ref('');
-  const content = ref('');
-  const is_deploy = ref(false);
+const name = ref('');
+const behavior = ref();
+const subject = ref('');
+const content = ref('');
+const is_deploy = ref(false);
 
-  const mail = ref();
-  const loading = ref(false);
-  const success = ref(false);
+const mail = ref();
+const loading = ref(false);
+const success = ref(false);
 
-  const fetchMail = async () => {
-    try {
-      const response = await $api.get(`/api/mail/${id.value}`);
-      if(response.data){
-        mail.value = response.data;
-        name.value = mail.value.name;
-        behavior.value = mail.value.behaviour;
-        subject.value = mail.value.subject;
-        is_deploy.value = mail.value.deploy;
-        content.value = mail.value.content;
-      }
-    }catch (e) {
-      console.log(e)
+const fetchMail = async () => {
+  try {
+    const response = await $api.get(`/api/mails_template/${id.value}`);
+    if(response.data){
+      mail.value = response.data;
+      name.value = mail.value.name;
+      behavior.value = mail.value.behaviour;
+      subject.value = mail.value.subject;
+      is_deploy.value = mail.value.deploy;
+      content.value = mail.value.content;
+    }
+  }catch (e) {
+    if(e.status === 401){
+      navigateTo('/mails')
     }
   }
+}
 
-  const toggleDeploy = async () => {
-    try {
-      const response = await $api.patch(`/api/mails/${id.value}`, {
-        deploy: is_deploy.value
-      });
-    }catch (e){
+const toggleDeploy = async () => {
+  try {
+    const response = await $api.patch(`/api/mails/${id.value}`, {
+      deploy: is_deploy.value
+    });
+  }catch (e){
 
+  }
+}
+
+const updateContent = (newContent) => {
+  content.value = newContent
+}
+
+const deleteMail = async () => {
+  try {
+    const response = await $api.delete(`/api/mail/${id.value}`);
+    if(response.status === 204){
+      navigateTo('/mails');
     }
+  }catch (e) {
+
   }
+}
 
-  const updateContent = (newContent) => {
-    content.value = newContent
-  }
-
-  const deleteMail = async () => {
-    try {
-      const response = await $api.delete(`/api/mail/${id.value}`);
-      if(response.status === 204){
-        navigateTo('/mails');
-      }
-    }catch (e) {
-
+const createMail = async () => {
+  loading.value = true;
+  try {
+    const response = await $api.post(`/api/mails`, {
+      name: name.value,
+      behaviour: behavior.value,
+      content: content.value,
+      subject: subject.value
+    });
+    if(response.data){
+      success.value = true;
     }
+  }catch (e) {
   }
+  loading.value = false;
+}
 
-  const editMail = async () => {
-    loading.value = true;
-    try {
-      const response = await $api.patch(`/api/mails/${id.value}`, {
-        name: name.value,
-        behaviour: behavior.value,
-        content: content.value,
-        subject: subject.value
-      });
-    }catch (e) {
-    }
-    loading.value = false;
-  }
-
-  onMounted(async () => {
-    await fetchMail();
-  })
+onMounted(async () => {
+  await fetchMail();
+})
 
 </script>
 
@@ -100,12 +105,7 @@
           </svg>
         </button>
       </div>
-      <form @submit.prevent="editMail">
-        <label class="inline-flex items-center cursor-pointer my-4">
-          <input type="checkbox" value="" class="sr-only peer" v-model="is_deploy" @change="toggleDeploy">
-          <div class="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer bg-slate-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-red-600"></div>
-          <span class="ms-3 text-sm font-medium text-gray-900 ">{{ is_deploy === true ? 'Activé' : 'Désactivé' }}</span>
-        </label>
+      <form @submit.prevent="createMail">
         <Input placeholder="Code vérification" label="Nom du mail" v-model="name"/>
         <label for="behaviour" class="flex flex-col my-2">
           Comportement
@@ -120,9 +120,11 @@
           <Editor @updateContent="updateContent" :defaultContent="content"/>
         </div>
 
-        <Button class="w-full" :loading="loading">Modifier le mail</Button>
+        <Button class="w-full" :loading="loading">Créer le mail avec ce template</Button>
       </form>
-      <Success>Le mail a bien été modifié</Success>
+      <div v-if="success" class="mt-4">
+        <Success :state="success">Le mail a été créée</Success>
+      </div>
     </div>
   </div>
 </template>

@@ -6,7 +6,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      API_URL: "http://localhost:8215"
+      API_URL: "http://localhost:8215",
+      // API_URL: "http://automatic.badyssblilita.fr/v1"
     }
   },
 

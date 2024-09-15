@@ -56,6 +56,7 @@ const { $api } = useNuxtApp();
         <div class="mt-4" v-if="error">
           <Error :state="error" :time="999999999">Email ou mot de passe incorrect</Error>
         </div>
+        <NuxtLink class="flex justify-center mt-4 text-gray-400 transition-all hover:underline " to="/register">Ou s'inscrire</NuxtLink>
       </form>
     </div>
 </template>

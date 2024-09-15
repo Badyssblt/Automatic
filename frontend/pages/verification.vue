@@ -1,5 +1,9 @@
 <template>
-  <VerificationInput @codeComplete="handleCodeComplete" />
+  <div class="flex flex-col items-center">
+    <h2 class="text-xl font-semibold my-4">Entrer votre code à 6 chiffre</h2>
+    <VerificationInput @codeComplete="handleCodeComplete" />
+  </div>
+
 </template>
 
 <script setup>
