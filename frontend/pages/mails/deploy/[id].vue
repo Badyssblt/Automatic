@@ -18,7 +18,14 @@
   const loading = ref(false);
   const success = ref(false);
 
+  const grapeContent = ref(``);
+
+  const currentEditor = ref('grape');
+
+  const editorKey = ref(Date.now());
+
   const fetchMail = async () => {
+
     try {
       const response = await $api.get(`/api/mail/${id.value}`);
       if(response.data){
@@ -28,6 +35,8 @@
         subject.value = mail.value.subject;
         is_deploy.value = mail.value.deploy;
         content.value = mail.value.content;
+        grapeContent.value = mail.value.content;
+
       }
     }catch (e) {
       console.log(e)
@@ -61,11 +70,17 @@
 
   const editMail = async () => {
     loading.value = true;
+    const localContent = ref();
+    if(currentEditor.value === 'grape'){
+      localContent.value = grapeContent.value;
+    }else {
+      localContent.value = content.value;
+    }
     try {
       const response = await $api.patch(`/api/mails/${id.value}`, {
         name: name.value,
         behaviour: behavior.value,
-        content: content.value,
+        content: localContent.value,
         subject: subject.value
       });
     }catch (e) {
@@ -76,6 +91,19 @@
   onMounted(async () => {
     await fetchMail();
   })
+
+  const toggleEditor = () => {
+    if(currentEditor.value === 'grape') {
+      currentEditor.value = 'tiptap'
+    }else {
+      currentEditor.value = 'grape'
+    }
+  }
+
+  watch(grapeContent, () => {
+    // Générer une nouvelle clé pour provoquer le re-render
+    editorKey.value = Date.now();
+  });
 
 </script>
 
@@ -116,8 +144,12 @@
         <Input placeholder="Merci pour votre inscription..." label="Objet" color="normal" class="w-full my-2" v-model="subject"/>
 
         <div class="my-4">
-          <p>Message</p>
-          <Editor @updateContent="updateContent" :defaultContent="content"/>
+          <div class="flex gap-4">
+            <p>Message</p>
+            <button type="button" @click="toggleEditor">Changer d'éditeur</button>
+          </div>
+          <GrapeEditor v-model="grapeContent" v-if="currentEditor === 'grape'" :defaultContent="grapeContent" :key="editorKey" />
+          <Editor @updateContent="updateContent" v-else-if="currentEditor === 'tiptap'" :defaultContent="content"/>
         </div>
 
         <Button class="w-full" :loading="loading">Modifier le mail</Button>

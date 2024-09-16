@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import {ref, onMounted, onBeforeUnmount, watch} from 'vue';
 import grapesjs from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
 
@@ -13,6 +13,9 @@ const props = defineProps({
   modelValue: {
     type: String,
     default: ''
+  },
+  defaultContent: {
+    type: String
   }
 });
 
@@ -25,11 +28,13 @@ const loadGoogleFonts = () => {
   link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
   link.rel = 'stylesheet';
   document.head.appendChild(link);
+
 };
 
 // Initialiser l'éditeur GrapesJS
 onMounted(() => {
-  loadGoogleFonts(); // Charger la police Inter
+
+  loadGoogleFonts();
 
   editor.value = grapesjs.init({
     container: editorContainer.value, // Référence DOM du conteneur de l'éditeur
@@ -84,15 +89,16 @@ onMounted(() => {
           buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
         },
         {
-          name: 'Typography',
+          name: 'Polices',
           open: true,
           buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-align'],
           properties: [
             {
-              name: 'Font Family',
+              name: 'Typographie',
               property: 'font-family',
-              defaults: 'Inter, sans-serif',
-              list: [
+              type: 'select',
+              default: 'Inter, sans-serif',
+              options: [
                 { name: 'Inter', value: 'Inter, sans-serif' },
                 { name: 'Arial', value: 'Arial, Helvetica, sans-serif' },
                 { name: 'Georgia', value: 'Georgia, serif' },
@@ -113,11 +119,18 @@ onMounted(() => {
         },
       ],
     },
+
   });
+
+
 
   editor.value.on('update', () => {
     getInlineHTML();
   });
+
+  if (props.defaultContent) {
+    editor.value.setComponents(props.defaultContent); // Assurez-vous que le contenu par défaut est chargé
+  }
 
   if (props.modelValue) {
     editor.value.setComponents(props.modelValue);
@@ -141,6 +154,9 @@ onMounted(() => {
     },
   });
 });
+
+
+
 
 // Fonction pour récupérer le HTML avec les styles en ligne
 const getInlineHTML = () => {
@@ -192,11 +208,6 @@ onBeforeUnmount(() => {
     <!-- Style Manager -->
     <div id="style-manager"></div>
 
-    <!-- Show Inline HTML -->
-    <div v-if="inlineHtml" class="mt-4 p-4 border border-gray-300 rounded-md bg-white">
-      <h3>Generated Inline HTML:</h3>
-      <pre>{{ inlineHtml }}</pre>
-    </div>
   </div>
 </template>
 
