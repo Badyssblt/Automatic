@@ -13,17 +13,27 @@ const behavior = ref('normal');
 const content = ref('');
 const subject = ref('');
 
+const grapeContent = ref('<p>test</p>');
+
+const currentEditor = ref('grape');
+
 const loading = ref(false);
 const success = ref(false);
 
 const createMail = async () => {
   loading.value = true;
   try {
+    const localContent = ref();
+    if(currentEditor.value === 'grape'){
+      localContent.value = grapeContent.value;
+    }else {
+      localContent.value = content.value;
+    }
     const response = await $api.post('/api/mails', {
       name: name.value,
       subject: subject.value,
       behaviour: behavior.value,
-      content: content.value,
+      content: localContent.value,
     });
     if(response.data.name){
       success.value = true;
@@ -41,6 +51,14 @@ const createMail = async () => {
 const logout = () => {
   store.logout();
   navigateTo('/')
+}
+
+const toggleEditor = () => {
+  if(currentEditor.value === 'grape') {
+    currentEditor.value = 'tiptap'
+  }else {
+    currentEditor.value = 'grape'
+  }
 }
 
 const updateContent = (newContent) => {
@@ -81,8 +99,12 @@ const updateContent = (newContent) => {
           <Input placeholder="Merci pour votre inscription..." label="Objet" color="normal" class="w-full my-2" v-model="subject"/>
 
           <div class="my-4">
-            <p>Message</p>
-            <Editor @updateContent="updateContent" />
+            <div class="flex gap-4">
+              <p>Message</p>
+              <button type="button" @click="toggleEditor">Changer d'éditeur</button>
+            </div>
+            <GrapeEditor v-model="grapeContent" v-if="currentEditor === 'grape'"/>
+            <Editor @updateContent="updateContent" v-else-if="currentEditor === 'tiptap'"/>
           </div>
 
           <Button class="w-full" :loading="loading">Créer le mail</Button>
