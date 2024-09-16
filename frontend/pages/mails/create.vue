@@ -20,6 +20,12 @@ const currentEditor = ref('grape');
 const loading = ref(false);
 const success = ref(false);
 
+const updateContent = (newContent) => {
+  console.log(newContent)
+  content.value = newContent
+}
+
+
 const createMail = async () => {
   loading.value = true;
   try {
@@ -61,9 +67,6 @@ const toggleEditor = () => {
   }
 }
 
-const updateContent = (newContent) => {
-  content.value = newContent;
-};
 </script>
 
 <template>
@@ -103,7 +106,7 @@ const updateContent = (newContent) => {
               <p>Message</p>
               <button type="button" @click="toggleEditor">Changer d'éditeur</button>
             </div>
-            <GrapeEditor v-model="grapeContent" v-if="currentEditor === 'grape'"/>
+            <GrapeEditor v-model="grapeContent" v-if="currentEditor === 'grape'" @update:modelValue="updateContent"/>
             <Editor @updateContent="updateContent" v-else-if="currentEditor === 'tiptap'"/>
           </div>
 

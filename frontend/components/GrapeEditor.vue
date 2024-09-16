@@ -37,13 +37,13 @@ onMounted(() => {
   loadGoogleFonts();
 
   editor.value = grapesjs.init({
-    container: editorContainer.value, // Référence DOM du conteneur de l'éditeur
+    container: editorContainer.value,
     fromElement: true,
     width: 'auto',
     height: '700px',
-    storageManager: false, // Désactiver le gestionnaire de stockage
+    storageManager: false,
     blockManager: {
-      appendTo: '#blocks', // ID de conteneur des blocs
+      appendTo: '#blocks',
       blocks: [
         {
           id: 'section',
@@ -122,21 +122,19 @@ onMounted(() => {
 
   });
 
-
-
-  editor.value.on('update', () => {
-    getInlineHTML();
-  });
+  if (!editor.value) {
+    console.error('Editor is not initialized properly.');
+    return;
+  }
 
   if (props.defaultContent) {
-    editor.value.setComponents(props.defaultContent); // Assurez-vous que le contenu par défaut est chargé
+    editor.value.setComponents(props.defaultContent);
   }
 
   if (props.modelValue) {
     editor.value.setComponents(props.modelValue);
   }
 
-  // Ajouter un bouton pour centrer le texte
   editor.value.Panels.addButton('options', {
     id: 'center-text',
     className: 'fa fa-align-center',
@@ -144,7 +142,6 @@ onMounted(() => {
     attributes: { title: 'Center Text' },
   });
 
-  // Commande pour centrer le texte
   editor.value.Commands.add('center-text', {
     run(editor) {
       const selected = editor.getSelected();
@@ -153,24 +150,26 @@ onMounted(() => {
       }
     },
   });
+
+  editor.value.on('component:update', updateContent);
+  editor.value.on('style:change', updateContent);
 });
 
 
+const updateContent = () => {
+  getInlineHTML();
+};
 
 
-// Fonction pour récupérer le HTML avec les styles en ligne
 const getInlineHTML = () => {
   if (!editor.value) return;
 
-  // Récupérer le HTML et CSS
   const html = editor.value.getHtml();
   const css = editor.value.getCss();
 
-  // Créer un conteneur DOM temporaire
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = html;
 
-  // Appliquer les styles CSS en ligne
   const styleSheet = new CSSStyleSheet();
   styleSheet.replaceSync(css);
   for (const rule of styleSheet.cssRules) {
@@ -179,13 +178,10 @@ const getInlineHTML = () => {
       element.style.cssText += rule.style.cssText;
     });
   }
-
-  // Récupérer le contenu avec les styles inline
   inlineHtml.value = tempDiv.innerHTML;
   emit('update:modelValue', inlineHtml.value);
 };
 
-// Libérer les ressources quand le composant est démonté
 onBeforeUnmount(() => {
   if (editor.value) {
     editor.value.destroy();

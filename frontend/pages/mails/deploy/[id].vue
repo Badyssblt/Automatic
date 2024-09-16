@@ -54,6 +54,7 @@
   }
 
   const updateContent = (newContent) => {
+    console.log(newContent)
     content.value = newContent
   }
 
@@ -101,7 +102,6 @@
   }
 
   watch(grapeContent, () => {
-    // Générer une nouvelle clé pour provoquer le re-render
     editorKey.value = Date.now();
   });
 
@@ -148,7 +148,7 @@
             <p>Message</p>
             <button type="button" @click="toggleEditor">Changer d'éditeur</button>
           </div>
-          <GrapeEditor v-model="grapeContent" v-if="currentEditor === 'grape'" :defaultContent="grapeContent" :key="editorKey" />
+          <GrapeEditor v-model="grapeContent" v-if="currentEditor === 'grape'" :defaultContent="grapeContent" :key="editorKey" @update:modelValue="updateContent"/>
           <Editor @updateContent="updateContent" v-else-if="currentEditor === 'tiptap'" :defaultContent="content"/>
         </div>
 
