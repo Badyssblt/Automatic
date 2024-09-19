@@ -85,7 +85,6 @@ class MailController extends AbstractController
 
 
         $smtp = $encryptionService->decrypt($user->getSmtp());
-        dd($smtp);
         $transport = Transport::fromDsn($smtp);
         $mailer = new Mailer($transport);
 

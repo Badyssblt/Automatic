@@ -48,9 +48,5 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Vérification réussi'], Response::HTTP_OK);
     }
 
-    #[Route('/api/user/export', name: 'app_user_export', methods: ['GET'])]
-    public function exportSql(DatabaseService $databaseService): Response
-    {
-        return $databaseService->exportDatabaseToCsv("SELECT * FROM user");
-    }
+
 }
