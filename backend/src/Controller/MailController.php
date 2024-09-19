@@ -7,6 +7,7 @@ use App\Repository\ApiKeyRepository;
 use App\Repository\MailRepository;
 use App\Repository\MailTemplateRepository;
 use App\Repository\UserRepository;
+use App\Service\EncryptionService;
 use Symfony\Bridge\Twig\Mime\BodyRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,7 @@ class MailController extends AbstractController
 
 
     #[Route('/api/send-mail/{mailKey}', name: 'app_send_mail', methods: ['POST'])]
-    public function sendMail(string $mailKey, MailRepository $mailTemplateRepository, Request $request, ApiKeyRepository $apiKeyRepository): Response
+    public function sendMail(EncryptionService $encryptionService, string $mailKey, MailRepository $mailTemplateRepository, Request $request, ApiKeyRepository $apiKeyRepository): Response
     {
 
         $apiKey = $request->query->get('apiKey');
@@ -83,7 +84,8 @@ class MailController extends AbstractController
         }
 
 
-        $smtp = $user->getSmtp();
+        $smtp = $encryptionService->decrypt($user->getSmtp());
+        dd($smtp);
         $transport = Transport::fromDsn($smtp);
         $mailer = new Mailer($transport);
 

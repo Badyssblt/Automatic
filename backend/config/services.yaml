@@ -32,3 +32,6 @@ services:
         arguments: [ '@request_stack' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+    App\Service\EncryptionService:
+        arguments:
+            $key: '%env(ENCRYPTION_KEY)%'

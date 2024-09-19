@@ -73,6 +73,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $verification_code = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $db = null;
+
     public function __construct()
     {
         $this->mails = new ArrayCollection();
@@ -251,6 +254,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerificationCode(int $verification_code): static
     {
         $this->verification_code = $verification_code;
+
+        return $this;
+    }
+
+    public function getDb(): ?string
+    {
+        return $this->db;
+    }
+
+    public function setDb(string $db): static
+    {
+        $this->db = $db;
 
         return $this;
     }

@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Mail;
 use App\Entity\User;
+use App\Service\EncryptionService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -18,7 +19,8 @@ class UserVerificationProcessor implements ProcessorInterface
     public function __construct(private HttpClientInterface $client,
                                 #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
                                 private ProcessorInterface $persistProcessor,
-                                private JWTTokenManagerInterface $jwtManager)
+                                private JWTTokenManagerInterface $jwtManager,
+                                private EncryptionService $encryptionService,)
     {
     }
 
@@ -29,16 +31,26 @@ class UserVerificationProcessor implements ProcessorInterface
             $verificationCode = random_int(100000, 999999);
 
             $data->setVerificationCode($verificationCode);
+            if($data->getSmtp() !== null && $data->getSmtp() !== ""){
 
+                $smtp = $this->encryptionService->encrypt($data->getSmtp());
+                $data->setSmtp($smtp);
+            }
+            if($data->getDb() !== null && $data->getDb() !== ""){
+                $db = $this->encryptionService->encrypt($data->getDb());
+                $data->setDb($db);
+            }
         }
 
         try {
             $this->client->request(
                 'POST',
-                $_ENV['API_URL'] ."/api/send-mail/efbd933a-21d3-4eef-9165-f33985327e2b?apiKey=" . $_ENV['API_KEY'],
+                $_ENV['API_URL'] ."/api/send-mail/test?apiKey=" . $_ENV['API_KEY'],
                 [
                     "json" => [
-                        "data" => $verificationCode,
+                        "data" => [
+                            "verificationCode" => $verificationCode,
+                        ],
                         "receiver" => $data->getEmail(),
                     ]
                 ]

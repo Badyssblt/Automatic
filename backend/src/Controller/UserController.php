@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\ApiKey;
 use App\Repository\UserRepository;
+use App\Service\DatabaseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,5 +46,11 @@ class UserController extends AbstractController
         $manager->flush();
 
         return $this->json(['message' => 'Vérification réussi'], Response::HTTP_OK);
+    }
+
+    #[Route('/api/user/export', name: 'app_user_export', methods: ['GET'])]
+    public function exportSql(DatabaseService $databaseService): Response
+    {
+        return $databaseService->exportDatabaseToCsv("SELECT * FROM user");
     }
 }
