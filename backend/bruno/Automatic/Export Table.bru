@@ -5,7 +5,15 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/api/user/export
+  url: {{baseUrl}}/api/user/export?sql=SELECT * FROM mail
   body: none
-  auth: none
+  auth: bearer
+}
+
+params:query {
+  sql: SELECT * FROM mail
+}
+
+auth:bearer {
+  token: {{token}}
 }

@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: https://automatic.badyssblilita.fr/v1/api/send-mail/2253409f-b129-40f1-a575-e41cb6ff844c?apiKey=test
+  url: {{baseUrl}}/api/send-mail/c7576115-288e-414e-ab3b-4ff668b71e11?apiKey=badyss
   body: json
   auth: bearer
 }
 
 params:query {
-  apiKey: test
+  apiKey: badyss
 }
 
 auth:bearer {
@@ -21,6 +21,9 @@ auth:bearer {
 body:json {
   {
     "receiver": "badyss.blt@gmail.com",
+    "data": {
+      "verificationCode": 2344
+    }
     
   }
 }

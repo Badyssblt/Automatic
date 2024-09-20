@@ -16,4 +16,18 @@ class DbController extends AbstractController
         $sql = $request->get('sql');
         return $databaseService->exportDatabaseToCsv($sql);
     }
+
+    #[Route('/api/user/import', name: 'app_user_import', methods: ['POST'])]
+    public function importExcel(Request $request, DatabaseService $databaseService): Response
+    {
+        // Récupérer le fichier téléchargé
+        $file = $request->files->get('file');
+        $table = $request->get('table');
+
+        if (!$file) {
+            return new $this->json(['error' => 'Aucun fichier fourni.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        return $databaseService->importFromExcel($file, $table);
+    }
 }
