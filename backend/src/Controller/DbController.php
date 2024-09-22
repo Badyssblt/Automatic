@@ -13,9 +13,29 @@ class DbController extends AbstractController
     #[Route('/api/user/export', name: 'app_user_export', methods: ['GET'])]
     public function exportSql(DatabaseService $databaseService, Request $request): Response
     {
+        $type = $request->query->get('type');
         $sql = $request->get('sql');
-        return $databaseService->exportDatabaseToCsv($sql);
+        if($type === "csv"){
+            return $databaseService->exportDatabaseToCsv($sql);
+        }else if($type === "json"){
+            return $databaseService->exportDatabaseToJson($sql);
+        }
+
+        return $this->json(['message' => 'Vous devez spécifier un type de requête'], Response::HTTP_BAD_REQUEST);
+
     }
+
+    #[Route('/api/user/databases', name: 'app_user_databases', methods: ['GET'])]
+    public function getDatabases(DatabaseService $databaseService, Request $request): Response
+    {
+        $databases = $databaseService->getAllDatabases();
+
+        return $this->json($databases, Response::HTTP_OK);
+
+
+    }
+
+
 
     #[Route('/api/user/import', name: 'app_user_import', methods: ['POST'])]
     public function importExcel(Request $request, DatabaseService $databaseService): Response
@@ -30,4 +50,6 @@ class DbController extends AbstractController
 
         return $databaseService->importFromExcel($file, $table);
     }
+
+
 }

@@ -52,6 +52,28 @@ class DatabaseService
     }
 
     /**
+     * Récupère toutes les bases de données accessibles par l'utilisateur.
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getAllDatabases(): array
+    {
+        $connection = $this->createUserDatabaseConnection();
+
+        try {
+            $sql = 'SHOW DATABASES';
+            $stmt = $connection->executeQuery($sql);
+            $databases = $stmt->fetchAllAssociative();
+
+            return array_map(fn($db) => $db['Database'], $databases);
+
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération des bases de données : ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Exporte les données de la base de données de l'utilisateur au format CSV.
      *
      * @return StreamedResponse
@@ -61,22 +83,18 @@ class DatabaseService
         $connection = $this->createUserDatabaseConnection();
 
 
-        // Créer une réponse pour le téléchargement
         $response = new StreamedResponse(function() use ($connection, $sql) {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
 
             $stmt = $connection->executeQuery($sql);
 
-            // Obtenir les résultats
             $columns = $stmt->fetchAllAssociative();
 
             if (count($columns) > 0) {
-                // Écrire les en-têtes
                 $headers = array_keys($columns[0]);
                 $sheet->fromArray($headers, null, 'A1');
 
-                // Écrire les lignes de données
                 $rows = [];
                 foreach ($columns as $row) {
                     $rows[] = array_values($row);
@@ -95,14 +113,26 @@ class DatabaseService
     }
 
     /**
-     * Exporte les données de la base de données de l'utilisateur au format SQL.
+     * Exporte les données de la base de données de l'utilisateur au format JSON.
      *
+     * @param string $sql La requête SQL à exécuter pour obtenir les données
      * @return StreamedResponse
      */
-    public function exportDatabaseToSql(): StreamedResponse
+    public function exportDatabaseToJson(string $sql): StreamedResponse
     {
-        // TODO: Implémentez l'exportation au format SQL si nécessaire.
-        throw new \Exception('SQL export not implemented yet.');
+        $connection = $this->createUserDatabaseConnection();
+
+        $response = new StreamedResponse(function() use ($connection, $sql) {
+            $stmt = $connection->executeQuery($sql);
+            $data = $stmt->fetchAllAssociative();
+
+            echo json_encode($data);
+        });
+
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export.json"');
+
+        return $response;
     }
 
     /**
@@ -117,21 +147,17 @@ class DatabaseService
         $connection = $this->createUserDatabaseConnection();
 
         try {
-            // Charger le fichier Excel
             $spreadsheet = IOFactory::load($file->getPathname());
             $sheet = $spreadsheet->getActiveSheet();
 
-            // Récupérer les données du fichier Excel
             $rows = $sheet->toArray(null, true, true, true);
 
-            // La première ligne doit contenir les en-têtes de colonnes
             $headers = array_shift($rows);
 
             if (empty($headers)) {
                 throw new \Exception('Le fichier Excel ne contient pas d\'en-têtes.');
             }
 
-            // Préparation des colonnes à ignorer ou ajuster (par ex. 'id' si auto-incrémenté)
             $columns = [];
             foreach ($headers as $header) {
                 if ($header !== 'id') {
@@ -139,7 +165,6 @@ class DatabaseService
                 }
             }
 
-            // Vérifier si les colonnes sont valides
             if (empty($columns)) {
                 throw new \Exception('Aucune colonne valide trouvée dans le fichier.');
             }
@@ -149,7 +174,6 @@ class DatabaseService
 
             $values = [];
             foreach ($rows as $row) {
-                // Filtrer les colonnes à insérer (ignorer 'id')
                 $rowData = [];
                 foreach ($headers as $key => $header) {
                     if ($header !== 'id') {
@@ -166,11 +190,9 @@ class DatabaseService
 
             $insertSql .= implode(',', $values);
 
-            // Ajouter "ON DUPLICATE KEY UPDATE" pour mettre à jour les doublons
             $updateSql = implode(',', array_map(fn($col) => "$col=VALUES($col)", $columns));
             $insertSql .= " ON DUPLICATE KEY UPDATE $updateSql";
 
-            // Exécuter la requête d'insertion
             $connection->executeStatement($insertSql);
 
             return new JsonResponse(['message' => 'Données importées avec succès !'], Response::HTTP_OK);
