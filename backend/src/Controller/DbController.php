@@ -32,7 +32,16 @@ class DbController extends AbstractController
 
         return $this->json($databases, Response::HTTP_OK);
 
+    }
 
+    #[Route('/api/user/tables', name: 'app_user_tables', methods: ['GET'])]
+    public function getTables(Request $request, DatabaseService $databaseService): Response
+    {
+        $database = $request->query->get('database');
+
+        $tables = $databaseService->getTablesFromDatabase($database);
+
+        return $this->json($tables, Response::HTTP_OK);
     }
 
 

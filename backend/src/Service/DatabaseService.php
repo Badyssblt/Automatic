@@ -201,4 +201,36 @@ class DatabaseService
             return new JsonResponse(['error' => 'Erreur lors de l\'importation : ' . $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+
+
+    /**
+     * Récupère les noms des tables d'une base de données donnée.
+     *
+     * @param string $databaseName Le nom de la base de données
+     * @return array
+     * @throws \Exception
+     */
+    public function getTablesFromDatabase(string $databaseName): array
+    {
+        $connection = $this->createUserDatabaseConnection();
+
+        try {
+            // Utiliser la base de données spécifiée
+            $connection->executeQuery("USE `$databaseName`");
+
+            // Requête pour obtenir les tables
+            $sql = 'SHOW TABLES';
+            $stmt = $connection->executeQuery($sql);
+            $tables = $stmt->fetchAllAssociative();
+
+            // Le nom de la colonne retournée par 'SHOW TABLES' peut varier selon le SGBD.
+            // Récupérons dynamiquement la première clé de chaque ligne pour garantir que ça marche dans tous les cas.
+            $tableNames = array_map(fn($table) => reset($table), $tables);
+
+            return $tableNames;
+
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération des tables : ' . $e->getMessage());
+        }
+    }
 }
