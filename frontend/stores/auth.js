@@ -7,6 +7,9 @@ export const useAuth = defineStore(
     const token = ref("");
     const verified = ref(false);
 
+    const selectedDatabase = ref("");
+    const selectedTable = ref("");
+
     const isAuthenticated = computed(() => {
         return user.value !== null && verified.value !== false;
     });
@@ -26,7 +29,9 @@ export const useAuth = defineStore(
       token,
       isAuthenticated,
       logout,
-        verified
+        verified,
+        selectedDatabase,
+        selectedTable
     };
   },
   {

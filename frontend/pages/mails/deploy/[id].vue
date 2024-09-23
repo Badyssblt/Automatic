@@ -38,6 +38,7 @@
         grapeContent.value = mail.value.content;
 
       }
+      editorKey.value = Date.now();
     }catch (e) {
       console.log(e)
     }
@@ -84,14 +85,11 @@
         content: localContent.value,
         subject: subject.value
       });
+      success.value = true;
     }catch (e) {
     }
     loading.value = false;
   }
-
-  onMounted(async () => {
-    await fetchMail();
-  })
 
   const toggleEditor = () => {
     if(currentEditor.value === 'grape') {
@@ -101,9 +99,13 @@
     }
   }
 
-  watch(grapeContent, () => {
-    editorKey.value = Date.now();
-  });
+
+  onMounted(async () => {
+    await fetchMail();
+  })
+
+
+
 
 </script>
 
@@ -154,7 +156,11 @@
 
         <Button class="w-full" :loading="loading">Modifier le mail</Button>
       </form>
-      <Success>Le mail a bien été modifié</Success>
+
+      <div v-if="success" class="mt-4">
+        <Success :state="success" >Le mail a été modifiée</Success>
+      </div>
+
     </div>
   </div>
 </template>

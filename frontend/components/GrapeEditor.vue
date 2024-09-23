@@ -127,13 +127,7 @@ onMounted(() => {
     return;
   }
 
-  if (props.defaultContent) {
-    editor.value.setComponents(props.defaultContent);
-  }
 
-  if (props.modelValue) {
-    editor.value.setComponents(props.modelValue);
-  }
 
   editor.value.Panels.addButton('options', {
     id: 'center-text',
@@ -199,7 +193,11 @@ onBeforeUnmount(() => {
     <div id="blocks" class="panel__basic-actions"></div>
 
     <!-- GrapesJS Editor Container -->
-    <div ref="editorContainer" class="editor-container min-h-[700px] border border-gray-300 p-2 rounded-md"></div>
+    <div ref="editorContainer" class="editor-container min-h-[700px] border border-gray-300 p-2 rounded-md">
+      <div id="gjs" v-html="defaultContent">
+
+      </div>
+    </div>
 
     <!-- Style Manager -->
     <div id="style-manager"></div>
