@@ -25,6 +25,7 @@
         }
       });
       tables.value = response.data;
+      store.selectedTable = tables.value[0];
     }catch (e) {
 
     }
@@ -44,7 +45,8 @@
       const response = await $api.get('/api/user/export', {
         params: {
           sql: `SELECT * FROM ${store.selectedTable}`,
-          type: "csv"
+          type: "csv",
+          database: store.selectedDatabase
         },
         responseType: 'blob'
       });
