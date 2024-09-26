@@ -55,7 +55,6 @@
   }
 
   const updateContent = (newContent) => {
-    console.log(newContent)
     content.value = newContent
   }
 

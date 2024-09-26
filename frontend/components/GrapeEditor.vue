@@ -146,9 +146,17 @@ onMounted(() => {
   });
 
   editor.value.on('component:update', updateContent);
-  editor.value.on('style:change', updateContent);
+  editor.value.on('change:content', updateContent);
+
+  document.addEventListener('click', handleClickOutside);
 });
 
+// Ecoute au click en dehors de l'editor car la mise a jour de getHTML si fait après avoir terminée la modification d'un composant
+const handleClickOutside = (event) => {
+  if (editorContainer.value && !editorContainer.value.contains(event.target)) {
+    updateContent();
+  }
+};
 
 const updateContent = () => {
   getInlineHTML();

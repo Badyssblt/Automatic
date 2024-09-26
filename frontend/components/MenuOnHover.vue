@@ -50,9 +50,12 @@ const clearActiveContent = () => {
          @mouseenter="isContentHovered = true" @mouseleave="isContentHovered = false">
       <p v-if="activeContent === 'mails'" class="flex flex-col items-center">
         Démarrer l'envoi de vos mails facilement avec notre API. Vous pouvez envoyer des données personnalisées et les styliser avec TailwindCSS
-        <NavLink class="w-fit mt-4">Commencer</NavLink>
+        <NavLink class="w-fit mt-4" to="/mails">Commencer</NavLink>
       </p>
-      <p v-if="activeContent === 'bdd'">Voici le contenu pour bdd</p>
+      <p v-if="activeContent === 'bdd'" class="flex flex-col items-center">
+        Gérer vos bases de données, en important ou exportant vos données dans différents formats (Excel, JSON ect...)
+        <NavLink class="w-fit mt-4" to="/databases">Commencer</NavLink>
+      </p>
       <p v-if="activeContent === 'deploy'">Voici le contenu pour déploiement</p>
     </div>
   </div>
